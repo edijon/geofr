@@ -45,3 +45,12 @@ func TestGivenFakeStructureComposedWhenHeaderThenGetCodeNameDescriptionStrings(t
 		t.Errorf("got %q instead of %q", current, expected)
 	}
 }
+
+func TestGivenFakeStructureCodeWhenRowsThenGetCodeValue(t *testing.T) {
+	fake := FakeStructureCode{Code: "test"}
+	expected := []string{"test"}
+	current := Row(fake)
+	if !reflect.DeepEqual(current, expected) {
+		t.Errorf("got %q instead of %q", current, expected)
+	}
+}
