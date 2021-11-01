@@ -18,5 +18,6 @@ func ReadAllFromHttpResponse(resp *http.Response) ([]byte, error) {
 }
 
 func UnmarshalJsonFromBytes(bytes []byte, iface interface{}) error {
+	// Set "iface" structure according to "bytes" JSON value.
 	return json.Unmarshal(bytes, iface)
 }
