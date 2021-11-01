@@ -10,7 +10,7 @@ import (
 
 func TestGivenNilWhenassertErrIsNotNilThenOK(t *testing.T) {
 	err := fakeNilError()
-	AssertErrIsNotNil(&err)
+	AssertErrIsNotNil(err)
 }
 
 func fakeNilError() error {
@@ -20,7 +20,7 @@ func fakeNilError() error {
 func TestGivenStringWhenassertErrIsNotNilThenPanic(t *testing.T) {
 	defer func() { recover() }()
 	err := errors.New("fake error")
-	AssertErrIsNotNil(&err)
+	AssertErrIsNotNil(err)
 	t.Errorf("Did not panic.")
 }
 
@@ -41,7 +41,7 @@ func TestGivenResponseWithNoBodyWhenReadAllFromHttpResponseThenPanic(t *testing.
 func TestGivenJsonBytesWhenUnmarshalJsonFromBytesThenGetStructure(t *testing.T) {
 	jsonBytes := []byte(`{"message": "test"}`)
 	message := &jsonStruct{}
-	UnmarshalJsonFromBytes(&jsonBytes, &message)
+	UnmarshalJsonFromBytes(jsonBytes, &message)
 	if message.Message != "test" {
 		t.Errorf("Didn't parse json, got : %q instead of %q", message, jsonBytes)
 	}

@@ -6,9 +6,9 @@ import (
 	"net/http"
 )
 
-func AssertErrIsNotNil(err *error) {
-	if *err != nil {
-		panic(*err)
+func AssertErrIsNotNil(err error) {
+	if err != nil {
+		panic(err)
 	}
 }
 
@@ -17,6 +17,6 @@ func ReadAllFromHttpResponse(resp *http.Response) ([]byte, error) {
 	return ioutil.ReadAll(resp.Body)
 }
 
-func UnmarshalJsonFromBytes(bytes *[]byte, iface interface{}) error {
-	return json.Unmarshal(*bytes, iface)
+func UnmarshalJsonFromBytes(bytes []byte, iface interface{}) error {
+	return json.Unmarshal(bytes, iface)
 }
