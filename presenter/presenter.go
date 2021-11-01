@@ -18,11 +18,11 @@ func Header(aStruct interface{}) []string {
 
 func Row(aStruct interface{}) []string {
 	// Get column values from struct field values.
-	var metadata reflect.Value = reflect.ValueOf(aStruct)
-	var length int = metadata.NumField()
+	var data reflect.Value = reflect.ValueOf(aStruct)
+	var length int = data.NumField()
 	var result []string = make([]string, length)
 	for i := 0; i < length; i++ {
-		result[i] = metadata.Field(i).String()
+		result[i] = data.Field(i).String()
 	}
 	return result
 }
