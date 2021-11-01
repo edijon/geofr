@@ -13,18 +13,21 @@ type Departement struct {
 }
 
 type DepartementRepository interface {
+	// This interface should be implemented for Departement operations.
 	Create(code string) Departement
 }
 
-func DepartementCreate(factory DepartementRepository, code string) Departement {
-	return factory.Create(code)
+func DepartementCreate(repository DepartementRepository, code string) Departement {
+	// It both looks for and creates a Departement instance according to a departement code.
+	return repository.Create(code)
 }
 
-type DepartementRepositoryRest struct {
+type DepartementRepositoryREST struct {
 	Url string
 }
 
-func (api *DepartementRepositoryRest) Create(code string) Departement {
+func (api DepartementRepositoryREST) Create(code string) Departement {
+	// REST implementation of the DepartementRepository interface.
 	url := queryUrl(api, code)
 	departement := Departement{}
 
@@ -34,16 +37,13 @@ func (api *DepartementRepositoryRest) Create(code string) Departement {
 	body, err := util.ReadAllFromHttpResponse(resp)
 	util.AssertErrIsNotNil(err)
 
-	err = setDepartementFromJson(&departement, body)
+	err = util.UnmarshalJsonFromBytes(body, &departement)
 	util.AssertErrIsNotNil(err)
 
 	return departement
 }
 
-func queryUrl(api *DepartementRepositoryRest, code string) string {
+func queryUrl(api DepartementRepositoryREST, code string) string {
+	// Builds a query url for target REST API depending of departement code.
 	return api.Url + "/" + code + "/"
-}
-
-func setDepartementFromJson(departement *Departement, json []byte) error {
-	return util.UnmarshalJsonFromBytes(json, departement)
 }
