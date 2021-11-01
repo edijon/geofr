@@ -5,14 +5,14 @@ import (
 	"strings"
 )
 
-func Header(aStruct interface{}) string {
-	reflectionType := reflect.TypeOf(aStruct)
-	var fieldCount int = reflectionType.NumField()
-	var result []string = make([]string, fieldCount)
-	for i := 0; i < fieldCount; i++ {
+func Header(aStruct interface{}) []string {
+	var aStructMetaData reflect.Type = reflect.TypeOf(aStruct)
+	var length int = aStructMetaData.NumField()
+	var result []string = make([]string, length)
+	for i := 0; i < length; i++ {
 		field := strings.ToUpper(
-			reflectionType.Field(i).Name)
+			aStructMetaData.Field(i).Name)
 		result[i] = field
 	}
-	return strings.Join(result, "; ")
+	return result
 }
