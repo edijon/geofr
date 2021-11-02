@@ -1,16 +1,16 @@
-package presenter
+package format
 
 import (
 	"reflect"
 	"testing"
 )
 
-type FakeStructureCode struct {
+type fakeStructureCode struct {
 	Code string
 }
 
 func TestGivenFakeStructureCodeWhenHeaderThenGetCodeString(t *testing.T) {
-	fake := FakeStructureCode{}
+	fake := fakeStructureCode{}
 	expected := []string{"CODE"}
 	current := Header(fake)
 	if !reflect.DeepEqual(current, expected) {
@@ -18,12 +18,12 @@ func TestGivenFakeStructureCodeWhenHeaderThenGetCodeString(t *testing.T) {
 	}
 }
 
-type FakeStructureName struct {
+type fakeStructureName struct {
 	Name string
 }
 
 func TestGivenFakeStructureNameWhenHeaderThenGetNameString(t *testing.T) {
-	fake := FakeStructureName{Name: "name"}
+	fake := fakeStructureName{Name: "name"}
 	expected := []string{"NAME"}
 	current := Header(fake)
 	if !reflect.DeepEqual(current, expected) {
@@ -31,14 +31,14 @@ func TestGivenFakeStructureNameWhenHeaderThenGetNameString(t *testing.T) {
 	}
 }
 
-type FakeStructureComposed struct {
+type fakeStructureComposed struct {
 	Code        string
 	Name        string
 	Description string
 }
 
 func TestGivenFakeStructureComposedWhenHeaderThenGetCodeNameDescriptionStrings(t *testing.T) {
-	fake := FakeStructureComposed{}
+	fake := fakeStructureComposed{}
 	expected := []string{"CODE", "NAME", "DESCRIPTION"}
 	current := Header(fake)
 	if !reflect.DeepEqual(current, expected) {
@@ -47,7 +47,7 @@ func TestGivenFakeStructureComposedWhenHeaderThenGetCodeNameDescriptionStrings(t
 }
 
 func TestGivenFakeStructureCodeWhenRowThenGetCodeValue(t *testing.T) {
-	fake := FakeStructureCode{Code: "test"}
+	fake := fakeStructureCode{Code: "test"}
 	expected := []string{"test"}
 	current := Row(fake)
 	if !reflect.DeepEqual(current, expected) {
@@ -56,7 +56,7 @@ func TestGivenFakeStructureCodeWhenRowThenGetCodeValue(t *testing.T) {
 }
 
 func TestGivenFakeStructureComposedWhenRowThenGetCodeNameDescriptionValues(t *testing.T) {
-	fake := FakeStructureComposed{Code: "test1", Name: "test2", Description: "test3"}
+	fake := fakeStructureComposed{Code: "test1", Name: "test2", Description: "test3"}
 	expected := []string{"test1", "test2", "test3"}
 	current := Row(fake)
 	if !reflect.DeepEqual(current, expected) {
