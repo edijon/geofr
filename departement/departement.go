@@ -17,11 +17,6 @@ type DepartementRepository interface {
 	Create(code string) Departement
 }
 
-func DepartementCreate(repository DepartementRepository, code string) Departement {
-	// It both looks for and creates a Departement instance according to a departement code.
-	return repository.Create(code)
-}
-
 type DepartementRepositoryREST struct {
 	Url string
 }
