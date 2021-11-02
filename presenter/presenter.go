@@ -2,6 +2,7 @@ package presenter
 
 import (
 	"fmt"
+	"strings"
 )
 
 type Output interface {
@@ -20,24 +21,21 @@ func (output *StandardOutput) Write(row []string) {
 		output.ColumnSize = defaultColumnSize
 	}
 	for i := range row {
-		value := row[i]
-		value = value + blankSpaces(uint(len(value)), output.ColumnSize)
-		fmt.Print(value[0:output.ColumnSize])
+		value := []rune(row[i]) //Helps for unicode.
+		length := uint(len(value))
+		fmt.Printf(
+			"%s%s",
+			string(value),
+			string(blankSpaces(length, output.ColumnSize)))
 	}
 	fmt.Println("") // End of line.
 }
 
-func blankSpaces(length uint, columnSize uint) string {
+func blankSpaces(length uint, columnSize uint) []rune {
 	// Make blank spaces based on value length and columnSize.
 	if length >= columnSize {
-		return "" // Do not need any blank space.
+		return []rune("") // Do not need any blank space.
 	}
 	var emptyLength uint = columnSize - length
-	var result string = ""
-	var i uint = 0
-	for i < emptyLength {
-		result = result + " "
-		i++
-	}
-	return result
+	return []rune(strings.Repeat(" ", int(emptyLength)))
 }
