@@ -7,27 +7,44 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const ApiUrl string = "https://geo.api.gouv.fr"
+const apiUrl string = "https://geo.api.gouv.fr"
+const defaultColumnSize uint = 25
 
 func main() {
 	var rootCmd = &cobra.Command{Use: "geofr"}
-	var cmdDepartement = &cobra.Command{
-		Use:   "departement [code département]",
-		Short: "Affiche le découpage administratif d'un département Français.",
-		Long:  `Affiche le découpage administratif d'un département Français.`,
-		Args:  cobra.MinimumNArgs(1),
-		Run:   departementCmd,
+	var cmdDepartements = &cobra.Command{
+		Use:   "departements [code département]",
+		Short: "Affiche le découpage administratif des départements Français.",
+		Long:  `Affiche le découpage administratif des départements Français.`,
+		Args:  cobra.MinimumNArgs(0),
+		Run:   departementsCmd,
 	}
-	rootCmd.AddCommand(cmdDepartement)
+	rootCmd.AddCommand(cmdDepartements)
 	rootCmd.Execute()
 }
 
-func departementCmd(cmd *cobra.Command, args []string) {
+func departementsCmd(cmd *cobra.Command, args []string) {
 	repository := departement.DepartementRepositoryREST{
-		Url: ApiUrl + "/departements",
+		Url: apiUrl + "/departements",
 	}
-	departement := repository.Create(args[0])
-	output := presenter.StandardOutput{ColumnSize: 30}
+	output := presenter.StandardOutput{ColumnSize: defaultColumnSize}
+	if len(args) < 1 {
+		getDepartements(repository, output)
+	} else {
+		getDepartement(repository, output, args[0])
+	}
+}
+
+func getDepartement(repository departement.DepartementRepository, output presenter.StandardOutput, code string) {
+	departement := repository.Create(code)
 	output.Write(format.Header(departement))
 	output.Write(format.Row(departement))
+}
+
+func getDepartements(repository departement.DepartementRepository, output presenter.StandardOutput) {
+	departements := repository.CreateAll()
+	output.Write(format.Header(departements[0]))
+	for _, departement := range departements {
+		output.Write(format.Row(departement))
+	}
 }

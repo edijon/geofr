@@ -15,6 +15,7 @@ type Departement struct {
 type DepartementRepository interface {
 	// This interface should be implemented for Departement operations.
 	Create(code string) Departement
+	CreateAll() []Departement
 }
 
 type DepartementRepositoryREST struct {
@@ -41,4 +42,26 @@ func (api DepartementRepositoryREST) Create(code string) Departement {
 func queryUrl(api DepartementRepositoryREST, code string) string {
 	// Builds a query url for target REST API depending of departement code.
 	return api.Url + "/" + code + "/"
+}
+
+func (api DepartementRepositoryREST) CreateAll() []Departement {
+	// REST implementation of the DepartementRepository interface.
+	url := queryAllUrl(api)
+	departements := make([]Departement, 0)
+
+	resp, err := http.Get(url)
+	util.AssertErrIsNotNil(err)
+
+	body, err := util.ReadAllFromHttpResponse(resp)
+	util.AssertErrIsNotNil(err)
+
+	err = util.UnmarshalJsonFromBytes(body, &departements)
+	util.AssertErrIsNotNil(err)
+
+	return departements
+}
+
+func queryAllUrl(api DepartementRepositoryREST) string {
+	// Builds a query url for target REST API depending of departement code.
+	return api.Url + "/"
 }

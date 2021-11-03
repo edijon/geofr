@@ -55,3 +55,22 @@ func TestGivenCode00WhenCreateThenErr(t *testing.T) {
 	repository.Create(code)
 	t.Errorf("Did not panic.")
 }
+
+func TestGivendepartementRepositoryFakeWhenCreateAllThenSliceOfDepartements(t *testing.T) {
+	repository := departementRepositoryFake{}
+	var departements []Departement = repository.CreateAll()
+	t.Logf("Got %q.", departements)
+}
+
+func (repository departementRepositoryFake) CreateAll() []Departement {
+	return []Departement{
+		{Code: "code", Nom: "nom", CodeRegion: "coderegion"},
+		{Code: "codeB", Nom: "nomB", CodeRegion: "coderegionB"},
+	}
+}
+
+func TestGivendepartementRepositoryRESTWhenCreateAllThenSliceOfDepartements(t *testing.T) {
+	repository := DepartementRepositoryREST{Url: api}
+	var departements []Departement = repository.CreateAll()
+	t.Logf("Got %q.", departements)
+}
