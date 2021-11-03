@@ -3,6 +3,7 @@ package presenter
 import (
 	"fmt"
 	"strings"
+	"unicode/utf8"
 )
 
 type Output interface {
@@ -21,21 +22,34 @@ func (output *StandardOutput) Write(row []string) {
 		output.ColumnSize = defaultColumnSize
 	}
 	for i := range row {
-		value := []rune(row[i]) //Helps for unicode.
-		length := uint(len(value))
-		fmt.Printf(
-			"%s%s",
-			string(value),
-			string(blankSpaces(length, output.ColumnSize)))
+		value := row[i]
+		length := uint(utf8.RuneCountInString(value))
+		value = truncateRunes(
+			value+blankSpaces(length, output.ColumnSize),
+			output.ColumnSize)
+		fmt.Printf("%s", value)
 	}
 	fmt.Println("") // End of line.
 }
 
-func blankSpaces(length uint, columnSize uint) []rune {
+func blankSpaces(length uint, columnSize uint) string {
 	// Make blank spaces based on value length and columnSize.
 	if length >= columnSize {
-		return []rune("") // Do not need any blank space.
+		return "" // Do not need any blank space.
 	}
 	var emptyLength uint = columnSize - length
-	return []rune(strings.Repeat(" ", int(emptyLength)))
+	return strings.Repeat(" ", int(emptyLength))
+}
+
+func truncateRunes(value string, limit uint) string {
+	var i uint = 0
+	var result string = ""
+	for _, value := range value {
+		if i >= limit {
+			break
+		}
+		result += string(value)
+		i++
+	}
+	return result
 }
