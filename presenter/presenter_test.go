@@ -42,3 +42,31 @@ func TestGivenSliceOfStringsWhenStandardOutputWriteThenRun(t *testing.T) {
 	output := &StandardOutput{}
 	output.Write([]string{"Hello", "World"})
 }
+
+func TestGivenUnicodeValueWhenCountRunesThenGetNumberOfRunes(t *testing.T) {
+	unicodeValue := "Pyrén"
+	expected := 5
+	current := countRunes(unicodeValue)
+	if current != expected {
+		t.Errorf("Got %q instead of %q", current, expected)
+	}
+}
+
+func TestGivenUnicodeStringAndLimit10WhenTruncateThenTruncate10Runes(t *testing.T) {
+	unicodeValue := "Pyrénées-Orientales"
+	expected := "Pyrénées-O"
+	current := truncateRunes(unicodeValue, 10)
+	if current != expected {
+		t.Errorf("Got %q instead of %q", current, expected)
+	}
+}
+
+func TestGivenStringWhenValueFilledWithBlanksGetValue(t *testing.T) {
+	value := "test"
+	var columnSize uint = 10
+	expected := "test      "
+	current := valueFilledWithBlanks(value, columnSize)
+	if current != expected {
+		t.Errorf("Got %q instead of %q", current, expected)
+	}
+}

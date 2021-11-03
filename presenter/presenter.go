@@ -22,14 +22,38 @@ func (output *StandardOutput) Write(row []string) {
 		output.ColumnSize = defaultColumnSize
 	}
 	for i := range row {
-		value := row[i]
-		length := uint(utf8.RuneCountInString(value))
-		value = truncateRunes(
-			value+blankSpaces(length, output.ColumnSize),
-			output.ColumnSize)
-		fmt.Printf("%s", value)
+		fmt.Printf(
+			"%s",
+			valueFilledWithBlanks(row[i], output.ColumnSize))
 	}
 	fmt.Println("") // End of line.
+}
+
+func valueFilledWithBlanks(value string, columnSize uint) string {
+	// Get truncated value filled with blanks until columnSize.
+	length := uint(countRunes(value))
+	return truncateRunes(
+		value+blankSpaces(length, columnSize),
+		columnSize)
+}
+
+func countRunes(runes string) int {
+	// Count runes in string, example : 'ééé' => 3
+	return utf8.RuneCountInString(runes)
+}
+
+func truncateRunes(runes string, limit uint) string {
+	// Equivalent of left in other languages, limit in runes.
+	var i uint = 0
+	var truncatedRunes string = ""
+	for _, runes := range runes {
+		if i >= limit {
+			break
+		}
+		truncatedRunes += string(runes)
+		i++
+	}
+	return truncatedRunes
 }
 
 func blankSpaces(length uint, columnSize uint) string {
@@ -39,17 +63,4 @@ func blankSpaces(length uint, columnSize uint) string {
 	}
 	var emptyLength uint = columnSize - length
 	return strings.Repeat(" ", int(emptyLength))
-}
-
-func truncateRunes(value string, limit uint) string {
-	var i uint = 0
-	var result string = ""
-	for _, value := range value {
-		if i >= limit {
-			break
-		}
-		result += string(value)
-		i++
-	}
-	return result
 }
