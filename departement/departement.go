@@ -14,29 +14,23 @@ type Departement struct {
 
 type DepartementRepository interface {
 	// This interface should be implemented for Departement operations.
-	Create(code string) Departement
-	CreateAll() []Departement
+	Create(code string) (Departement, error)
+	CreateAll() ([]Departement, error)
 }
 
 type DepartementRepositoryREST struct {
 	Url string
 }
 
-func (api DepartementRepositoryREST) Create(code string) Departement {
+func (api DepartementRepositoryREST) Create(code string) (Departement, error) {
 	// REST implementation of the DepartementRepository interface.
 	url := queryUrl(api, code)
 	departement := Departement{}
-
-	resp, err := http.Get(url)
-	util.AssertErrIsNotNil(err)
-
-	body, err := util.ReadAllFromHttpResponse(resp)
-	util.AssertErrIsNotNil(err)
-
-	err = util.UnmarshalJsonFromBytes(body, &departement)
-	util.AssertErrIsNotNil(err)
-
-	return departement
+	defer func() { recover() }()
+	resp, _ := http.Get(url)
+	body, _ := util.ReadAllFromHttpResponse(resp)
+	err := util.UnmarshalJsonFromBytes(body, &departement)
+	return departement, err
 }
 
 func queryUrl(api DepartementRepositoryREST, code string) string {
@@ -44,21 +38,15 @@ func queryUrl(api DepartementRepositoryREST, code string) string {
 	return api.Url + "/" + code + "/"
 }
 
-func (api DepartementRepositoryREST) CreateAll() []Departement {
+func (api DepartementRepositoryREST) CreateAll() ([]Departement, error) {
 	// REST implementation of the DepartementRepository interface.
 	url := queryAllUrl(api)
 	departements := make([]Departement, 0)
-
-	resp, err := http.Get(url)
-	util.AssertErrIsNotNil(err)
-
-	body, err := util.ReadAllFromHttpResponse(resp)
-	util.AssertErrIsNotNil(err)
-
-	err = util.UnmarshalJsonFromBytes(body, &departements)
-	util.AssertErrIsNotNil(err)
-
-	return departements
+	defer func() { recover() }()
+	resp, _ := http.Get(url)
+	body, _ := util.ReadAllFromHttpResponse(resp)
+	err := util.UnmarshalJsonFromBytes(body, &departements)
+	return departements, err
 }
 
 func queryAllUrl(api DepartementRepositoryREST) string {

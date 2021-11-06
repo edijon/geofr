@@ -36,15 +36,23 @@ func departementsCmd(cmd *cobra.Command, args []string) {
 }
 
 func getDepartement(repository departement.DepartementRepository, output presenter.StandardOutput, code string) {
-	departement := repository.Create(code)
-	output.Write(format.Header(departement))
-	output.Write(format.Row(departement))
+	dept, err := repository.Create(code)
+	output.Write(format.Header(departement.Departement{}))
+	if err == nil {
+		output.Write(format.Row(dept))
+	}
 }
 
 func getDepartements(repository departement.DepartementRepository, output presenter.StandardOutput) {
-	departements := repository.CreateAll()
-	output.Write(format.Header(departements[0]))
-	for _, departement := range departements {
-		output.Write(format.Row(departement))
+	depts, err := repository.CreateAll()
+	output.Write(format.Header(departement.Departement{}))
+	if err == nil {
+		writeDepartementRows(depts, output)
+	}
+}
+
+func writeDepartementRows(depts []departement.Departement, output presenter.StandardOutput) {
+	for _, dept := range depts {
+		output.Write(format.Row(dept))
 	}
 }
