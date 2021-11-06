@@ -6,12 +6,6 @@ import (
 	"net/http"
 )
 
-func AssertErrIsNotNil(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 func ReadAllFromHttpResponse(resp *http.Response) ([]byte, error) {
 	defer resp.Body.Close()
 	return ioutil.ReadAll(resp.Body)
