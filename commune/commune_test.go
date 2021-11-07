@@ -33,7 +33,7 @@ func TestGivenFakeCodeAndRepositoryWhenCreateThenGetCommune(t *testing.T) {
 	}
 }
 
-func TestGivenCode66172WhenCreateThenGetCommune(t *testing.T) {
+func TestGivenCode66172WhenCreateThenGetSaintEsteve(t *testing.T) {
 	code := "66172"
 	commune := Commune{Code: "00", Nom: "", CodeRegion: ""}
 	repository := CommuneRepositoryREST{Url: api}
@@ -41,4 +41,63 @@ func TestGivenCode66172WhenCreateThenGetCommune(t *testing.T) {
 	if commune.Code != "66172" || commune.Nom != "Saint-Estève" || commune.CodeRegion != "76" {
 		t.Errorf("got %q", commune)
 	}
+}
+
+func TestGivenCode75056WhenCreateThenGetParis(t *testing.T) {
+	code := "75056"
+	commune := Commune{Code: "00", Nom: "", CodeRegion: ""}
+	repository := CommuneRepositoryREST{Url: api}
+	commune, _ = repository.Create(code)
+	if commune.Code != "75056" || commune.Nom != "Paris" || commune.CodeRegion != "11" {
+		t.Errorf("got %q", commune)
+	}
+}
+
+func TestGivenCode00WhenCreateThenErr(t *testing.T) {
+	code := "00"
+	repository := CommuneRepositoryREST{Url: api}
+	_, err := repository.Create(code)
+	if err == nil {
+		t.Errorf("Did not raise an error.")
+	}
+}
+
+func TestGivenCodeAbWhenCreateThenErr(t *testing.T) {
+	code := "ab"
+	repository := CommuneRepositoryREST{Url: api}
+	_, err := repository.Create(code)
+	if err == nil {
+		t.Errorf("Did not raise an error.")
+	}
+}
+
+func TestGivenCommuneRepositoryFakeWhenCreateAllThenSliceOfCommunes(t *testing.T) {
+	repository := communeRepositoryFake{}
+	departements, _ := repository.CreateAll()
+	t.Logf("Got %q.", departements)
+}
+
+func (repository communeRepositoryFake) CreateAll() ([]Commune, error) {
+	return []Commune{
+		{
+			Nom:             "Saint-Estève",
+			Code:            "66172",
+			CodeDepartement: "66",
+			CodeRegion:      "76",
+			CodesPostaux:    []string{"66240"},
+			Population:      11841},
+		{
+			Nom:             "Saint-Estève",
+			Code:            "66172",
+			CodeDepartement: "66",
+			CodeRegion:      "76",
+			CodesPostaux:    []string{"66240"},
+			Population:      11841},
+	}, nil
+}
+
+func TestGivenCommuneRepositoryRESTWhenCreateAllThenSliceOfCommunes(t *testing.T) {
+	repository := CommuneRepositoryREST{Url: api}
+	communes, _ := repository.CreateAll()
+	t.Logf("Got %q.", communes)
 }
