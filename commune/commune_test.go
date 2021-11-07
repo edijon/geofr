@@ -98,6 +98,6 @@ func (repository communeRepositoryFake) CreateAll() ([]Commune, error) {
 
 func TestGivenCommuneRepositoryRESTWhenCreateAllThenSliceOfCommunes(t *testing.T) {
 	repository := CommuneRepositoryREST{Url: api}
-	communes, _ := repository.CreateAll()
-	t.Logf("Got %q.", communes)
+	comms, _ := repository.CreateAll()
+	t.Logf("Got %q.", comms)
 }

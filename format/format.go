@@ -2,6 +2,7 @@ package format
 
 import (
 	"reflect"
+	"strconv"
 	"strings"
 )
 
@@ -22,7 +23,20 @@ func Row(aStruct interface{}) []string {
 	var length int = data.NumField()
 	var result []string = make([]string, length)
 	for i := 0; i < length; i++ {
-		result[i] = data.Field(i).String()
+		result[i] = stringFromValue(data.Field(i))
+	}
+	return result
+}
+
+func stringFromValue(value reflect.Value) string {
+	// Get string representation from value for known cases, else value.String()
+	result := value.String()
+	switch value.Kind() {
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		result = strconv.FormatInt(value.Int(), 10)
+	case reflect.Slice:
+		elems, _ := value.Interface().([]string)
+		result = strings.Join(elems, ", ")
 	}
 	return result
 }

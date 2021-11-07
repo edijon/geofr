@@ -55,6 +55,32 @@ func TestGivenFakeStructureCodeWhenRowThenGetCodeValue(t *testing.T) {
 	}
 }
 
+type fakeStructureSlice struct {
+	Code []string
+}
+
+func TestGivenFakeStructureWithSliceWhenRowThenGetCodeValue(t *testing.T) {
+	fake := fakeStructureSlice{Code: []string{"test", "test"}}
+	expected := []string{"test, test"}
+	current := Row(fake)
+	if !reflect.DeepEqual(current, expected) {
+		t.Errorf("got %q instead of %q", current, expected)
+	}
+}
+
+type fakeStructureInt struct {
+	Age int
+}
+
+func TestGivenFakeStructureIntWhenRowThenGetCodeValue(t *testing.T) {
+	fake := fakeStructureInt{Age: 30}
+	expected := []string{"30"}
+	current := Row(fake)
+	if !reflect.DeepEqual(current, expected) {
+		t.Errorf("got %q instead of %q", current, expected)
+	}
+}
+
 func TestGivenFakeStructureComposedWhenRowThenGetCodeNameDescriptionValues(t *testing.T) {
 	fake := fakeStructureComposed{Code: "test1", Name: "test2", Description: "test3"}
 	expected := []string{"test1", "test2", "test3"}
