@@ -16,7 +16,7 @@ type StandardOutput struct {
 
 const defaultColumnSize uint = 20
 
-func (output *StandardOutput) Write(row []string) {
+func (output StandardOutput) Write(row []string) {
 	// Writes values of length output.ColumnSize (each).
 	if output.ColumnSize == 0 {
 		output.ColumnSize = defaultColumnSize
