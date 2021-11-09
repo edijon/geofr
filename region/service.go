@@ -6,23 +6,23 @@ import (
 )
 
 func GetRegion(repository RegionRepository, output presenter.Output, code string) {
-	comm, err := repository.Create(code)
+	reg, err := repository.Create(code)
 	output.Write(format.Header(Region{}))
 	if err == nil {
-		output.Write(format.Row(comm))
+		output.Write(format.Row(reg))
 	}
 }
 
 func GetRegions(repository RegionRepository, output presenter.Output) {
-	comms, err := repository.CreateAll()
+	regs, err := repository.CreateAll()
 	output.Write(format.Header(Region{}))
 	if err == nil {
-		writeRegionRows(comms, output)
+		writeRegionRows(regs, output)
 	}
 }
 
-func writeRegionRows(comms []Region, output presenter.Output) {
-	for _, comm := range comms {
-		output.Write(format.Row(comm))
+func writeRegionRows(regs []Region, output presenter.Output) {
+	for _, reg := range regs {
+		output.Write(format.Row(reg))
 	}
 }

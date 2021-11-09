@@ -86,6 +86,6 @@ func (repository regionRepositoryFake) CreateAll() ([]Region, error) {
 
 func TestGivenRegionRepositoryRESTWhenCreateAllThenSliceOfRegions(t *testing.T) {
 	repository := RegionRepositoryREST{Url: api}
-	comms, _ := repository.CreateAll()
-	t.Logf("Got %q.", comms)
+	regs, _ := repository.CreateAll()
+	t.Logf("Got %q.", regs)
 }
