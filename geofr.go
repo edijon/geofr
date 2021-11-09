@@ -4,7 +4,6 @@ import (
 	"github.com/edijon/geofr/commune"
 	"github.com/edijon/geofr/departement"
 	"github.com/edijon/geofr/presenter"
-	"github.com/edijon/geofr/service"
 	"github.com/spf13/cobra"
 )
 
@@ -38,9 +37,9 @@ func departementsCmd(cmd *cobra.Command, args []string) {
 	}
 	output := presenter.StandardOutput{ColumnSize: defaultColumnSize}
 	if len(args) < 1 {
-		service.GetDepartements(repository, output)
+		departement.GetDepartements(repository, output)
 	} else {
-		service.GetDepartement(repository, output, args[0])
+		departement.GetDepartement(repository, output, args[0])
 	}
 }
 
@@ -50,8 +49,8 @@ func communesCmd(cmd *cobra.Command, args []string) {
 	}
 	output := presenter.StandardOutput{ColumnSize: defaultColumnSize}
 	if len(args) < 1 {
-		service.GetCommunes(repository, output)
+		commune.GetCommunes(repository, output)
 	} else {
-		service.GetCommune(repository, output, args[0])
+		commune.GetCommune(repository, output, args[0])
 	}
 }
