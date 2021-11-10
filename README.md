@@ -42,6 +42,12 @@ Client `Go` permettant de récupérer le découpage administratif Français.
     ```bash
     ./geofr regions 76
     ```
+- Exemple
+    ```bash
+    # -> % ./geofr regions 76
+    NOM                                     CODE                                    
+    Occitanie                               76 
+    ```
 
 ### Départements
 
@@ -54,6 +60,13 @@ Client `Go` permettant de récupérer le découpage administratif Français.
     ./geofr departements 66
     ```
 
+- Exemple : 
+    ```bash
+    # ./geofr departements 66
+    NOM                      CODE                     CODEREGION               
+    Pyrénées-Orientales      66                       76            
+    ```
+
 ### Communes
 
 - Découpage administratif des communes
@@ -63,6 +76,11 @@ Client `Go` permettant de récupérer le découpage administratif Français.
 - Découpage administratif de la commune Saint-Estève
     ```bash
     ./geofr communes 66172
+    ```
+    ```bash
+    # ./geofr communes 66172
+    NOM                      CODE                     CODEDEPARTEMENT          CODEREGION               CODESPOSTAUX             POPULATION               
+    Saint-Estève             66172                    66                       76                       66240                    11841     
     ```
 
 ## Compilation
