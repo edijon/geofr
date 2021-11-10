@@ -2,6 +2,8 @@
 
 > French software
 
+![ci_workflow](https://github.com/edijon/geofr/actions/workflows/CI.yml/badge.svg)
+
 ## Sommaire
 
 1. [Introduction](#introduction)
