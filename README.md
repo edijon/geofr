@@ -77,6 +77,7 @@ Client `Go` permettant de récupérer le découpage administratif Français.
     ```bash
     ./geofr communes 66172
     ```
+- Exemple
     ```bash
     # ./geofr communes 66172
     NOM                      CODE                     CODEDEPARTEMENT          CODEREGION               CODESPOSTAUX             POPULATION               
